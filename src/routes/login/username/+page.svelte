@@ -27,6 +27,26 @@
 
     async function saveUsername() {
         // TODO: Save username to user document
+        console.log("Saving username", username);
+        const batch = writeBatch(db);
+        // Atomic write to both collections using a batch
+        batch.set(doc(db, "usernames", username), { uid: $user?.uid });
+        batch.set(doc(db, "users", $user!.uid), {
+            username,
+            photoURL: $user?.photoURL ?? null,
+            published: true,
+            bio: "",
+            links: [
+                {
+                    title: "Test",
+                    url: "https://kung.foo",
+                    icon: "🔗",
+                },
+            ],
+        });
+        await batch.commit();
+        username = "";
+        isAvailable = false;
     }
 </script>
 
