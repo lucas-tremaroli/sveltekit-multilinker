@@ -1,6 +1,6 @@
 <script lang="ts">
     import AuthCheck from "$lib/components/AuthCheck.svelte";
-    import { db, user } from "$lib/firebase";
+    import { db, user, userData } from "$lib/firebase";
     import { doc, getDoc, writeBatch } from "firebase/firestore";
 
     let username = "";
@@ -51,6 +51,7 @@
 
     const re = /^(?=[a-zA-Z0-9._]{3,16}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
 
+    // Reactive statements to determine the validity and touched state of the username
     $: isValid =
         username?.length > 2 && username.length < 16 && re.test(username);
     $: isTouched = username.length > 0;
@@ -59,35 +60,44 @@
 
 <AuthCheck>
     <h1>Username</h1>
-    <form on:submit|preventDefault={saveUsername}>
-        <input
-            type="text"
-            placeholder="Username"
-            class="input w-full"
-            bind:value={username}
-            on:input={checkAvailability}
-            class:input-error={!isValid && isTouched}
-            class:input-warning={isTaken && !loading}
-            class:input-success={isAvailable && isValid && !loading}
-        />
-        <div class="my-4 min-h-16 px-8 w-full">
-            {#if loading && isTouched}
-                <p class="text-secondary">
-                    Checking availability of @{username}...
-                </p>
-            {:else if isTouched && !isValid}
-                <p class="text-red-500">Username must be 3-16 characters long and contain only alphanumeric characters.</p>
-            {:else if !isTouched}
-                <p class="text-secondary">Choose a username</p>
-            {:else if isTaken}
-                <p class="text-red-500">Username is already taken</p>
-            {:else if isAvailable && isValid}
-                <p class="text-green-500">Username is available</p>
-                <button
-                    class="btn btn-success"
-                    disabled={!isAvailable || loading}>Save</button
-                >
-            {/if}
-        </div>
-    </form>
+    {#if $userData?.username}
+        <p class="text-secondary">
+            You already have a username: @{$userData.username}
+        </p>
+    {:else}
+        <form on:submit|preventDefault={saveUsername}>
+            <input
+                type="text"
+                placeholder="Username"
+                class="input w-full"
+                bind:value={username}
+                on:input={checkAvailability}
+                class:input-error={!isValid && isTouched}
+                class:input-warning={isTaken && !loading}
+                class:input-success={isAvailable && isValid && !loading}
+            />
+            <div class="my-4 min-h-16 px-8 w-full">
+                {#if loading && isTouched}
+                    <p class="text-secondary">
+                        Checking availability of @{username}...
+                    </p>
+                {:else if isTouched && !isValid}
+                    <p class="text-red-500">
+                        Username must be 3-16 characters long<br />and contain
+                        only alphanumeric characters.
+                    </p>
+                {:else if !isTouched}
+                    <p class="text-secondary">Choose a username</p>
+                {:else if isTaken}
+                    <p class="text-red-500">Username is already taken</p>
+                {:else if isAvailable && isValid}
+                    <p class="text-green-500">Username is available</p>
+                    <button
+                        class="btn btn-success"
+                        disabled={!isAvailable || loading}>Save</button
+                    >
+                {/if}
+            </div>
+        </form>
+    {/if}
 </AuthCheck>
