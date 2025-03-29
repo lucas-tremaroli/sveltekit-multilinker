@@ -1,38 +1,111 @@
-# create-svelte
+# SvelteKit Multilinker
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+This is a personal project to learn SvelteKit, leveraging TailwindCSS with DaisyUI. The application allows users to create and manage a profile with links to their social media accounts or other websites. Users can sign in with Google, choose a username, upload a profile picture, and add/edit links to their profile.
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- User authentication with Google
+- Profile creation and management
+- Add, edit, and delete links
+- Drag and drop to reorder links
+- Responsive design with TailwindCSS and DaisyUI
+- Firebase integration for authentication, Firestore for database, and Firebase Storage for profile pictures
+
+## Technologies Used
+
+- [SvelteKit](https://kit.svelte.dev/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [DaisyUI](https://daisyui.com/)
+- [Firebase](https://firebase.google.com/)
+- [Svelte](https://svelte.dev/)
+
+## Setup
+
+1. Clone the repository:
 
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+git clone https://github.com/yourusername/sveltekit-multilinker.git
+cd sveltekit-multilinker
 ```
 
-## Developing
+2. Install dependencies:
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+```bash
+npm install
+```
+
+3. Create a `.env` file in the root directory and add your Firebase configuration:
+
+```env
+FB_PROJECT_ID=your-firebase-project-id
+FB_CLIENT_EMAIL=your-firebase-client-email
+FB_PRIVATE_KEY=your-firebase-private-key
+```
+
+4. Start the development server:
 
 ```bash
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+5. Open your browser and navigate to `http://localhost:3000`.
 
-To create a production version of your app:
+## Usage
 
-```bash
-npm run build
-```
+### Authentication
 
-You can preview the production build with `npm run preview`.
+- Users can sign in with their Google account.
+- The authentication state is managed using Firebase Authentication.
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+### Profile Management
+
+- After signing in, users can choose a username.
+- Users can upload a profile picture.
+- Users can add, edit, and delete links to their profile.
+- Links can be reordered using drag and drop.
+
+### Routes
+
+- `/`: Home page with a welcome message and a button to get started.
+- `/login`: Login page with Google authentication.
+- `/login/username`: Page to choose a username.
+- `/login/photo`: Page to upload a profile picture.
+- `/[username]`: Public profile page displaying the user's links.
+- `/[username]/bio`: Page to edit the user's bio.
+- `/[username]/edit`: Page to manage the user's links.
+
+## Components
+
+### AnimatedRoute
+
+A component that provides a transition effect when navigating between routes.
+
+### AuthCheck
+
+A component that checks if the user is authenticated. If not, it displays a sign-in prompt.
+
+### SortableList
+
+A component that allows users to reorder items in a list using drag and drop.
+
+### StepNavigation
+
+A component that displays a step navigation bar for the login process.
+
+### UserLink
+
+A component that displays a link with an icon and title.
+
+## Firebase Integration
+
+- Firebase Authentication is used for user authentication.
+- Firestore is used to store user data, including usernames, bios, and links.
+- Firebase Storage is used to store profile pictures.
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request if you have any suggestions or improvements.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
