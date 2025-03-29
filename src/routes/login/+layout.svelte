@@ -8,7 +8,7 @@
     <StepNavigation />
     <AnimatedRoute>
         <main>
-            <div class="card-body items-center text-center">
+            <div class="items-center">
                 <!--All child pages will be rendered inside of this card thanks to the slot tag-->
                 <slot />
             </div>

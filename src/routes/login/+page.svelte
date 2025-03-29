@@ -13,11 +13,16 @@
 </script>
 
 <AuthCheck>
-    <div class="card">
-        <h2 class="card-title">Welcome, {$user?.displayName}!</h2>
-        <p class="text-center text-success">You are successfully logged in.</p>
-        <button class="btn btn-primary" on:click={handleSignOut}
-            >Sign Out</button
-        >
+    <div class="card bg-base-300">
+        <div class="card-body space-y-2">
+            <h2 class="card-title">Welcome, {$user?.displayName}!</h2>
+            <p class="text-success">You are successfully logged in.</p>
+            <div class="card-actions">
+                <button
+                    class="btn btn-primary btn-block"
+                    on:click={handleSignOut}>Sign Out</button
+                >
+            </div>
+        </div>
     </div>
 </AuthCheck>

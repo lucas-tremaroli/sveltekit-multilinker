@@ -19,14 +19,15 @@
         debounceTimer = setTimeout(async () => {
             console.log("Checking availability for", username);
             const docRef = doc(db, "usernames", username);
-            const docSnap = await getDoc(docRef).then((doc) => doc.exists());
-            isAvailable = !docSnap;
+            const docSnap = await getDoc(docRef);
+            isAvailable = !docSnap.exists();
             loading = false;
         }, 500);
     }
 
     async function saveUsername() {
-        // TODO: Save username to user document
+        if (!isAvailable || loading) return;
+
         console.log("Saving username", username);
         const batch = writeBatch(db);
         // Atomic write to both collections using a batch
@@ -59,11 +60,17 @@
 </script>
 
 <AuthCheck>
-    <h1>Username</h1>
     {#if $userData?.username}
-        <p class="text-secondary">
-            You already have a username: @{$userData.username}
-        </p>
+        <div class="card bg-base-300">
+            <div class="card-body space-y-2">
+                <h2 class="card-title">Username</h2>
+                <p>
+                    Your username is <b class="text-success"
+                        >@{$userData.username}</b
+                    >
+                </p>
+            </div>
+        </div>
     {:else}
         <form on:submit|preventDefault={saveUsername}>
             <input

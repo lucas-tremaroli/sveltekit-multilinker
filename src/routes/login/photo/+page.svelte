@@ -23,31 +23,40 @@
 </script>
 
 <AuthCheck>
-    <h2 class="card-title">Upload a Profile Photo</h2>
-    <form class="max-w-screen-md w-full">
-        <div class="form-control w-full max-w-xs my-10 mx-auto text-center">
-            <img
-                src={previewURL ?? $userData?.photoURL ?? "/user.png"}
-                alt="photoURL"
-                width="200"
-                height="200"
-                class="mx-auto"
-            />
-            <label for="photoURL" class="label">
-                <span class="label-text">Pick a file</span>
-            </label>
-            <input
-                on:change={uploadPhoto}
-                name="photoURL"
-                type="file"
-                class="file-input file-input-bordered w-full max-w-xs"
-                accept="image/*"
-            />
-            {#if uploading}
-                <p>Uploading...</p>
-                <progress class="progress progress-info w-56 mt-6" />
-            {/if}
+    <div class="card bg-base-300">
+        <div class="card-body space-y-2">
+            <h2 class="card-title">Profile Pic</h2>
+            <p>Upload or change your profile picture.</p>
+            <form>
+                <div class="form-control space-y-2">
+                    <img
+                        src={previewURL ?? $userData?.photoURL ?? "/user.png"}
+                        alt="photoURL"
+                        width="200"
+                        height="200"
+                        class="mx-auto my-2"
+                    />
+                    {#if uploading}
+                        <div class="flex flex-col items-center">
+                            <p>Uploading...</p>
+                            <progress
+                                class="progress progress-info w-56 mt-2"
+                            />
+                        </div>
+                    {:else}
+                        <input
+                            on:change={uploadPhoto}
+                            name="photoURL"
+                            type="file"
+                            class="file-input file-input-bordered"
+                            accept="image/*"
+                        />
+                    {/if}
+                </div>
+            </form>
+            <div class="card-actions">
+                <a {href} class="btn btn-primary btn-block">Finish</a>
+            </div>
         </div>
-    </form>
-    <a {href} class="btn btn-primary">Finish</a>
+    </div>
 </AuthCheck>
