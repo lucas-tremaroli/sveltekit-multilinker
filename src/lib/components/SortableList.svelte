@@ -2,20 +2,27 @@
     import { flip } from "svelte/animate";
     import { createEventDispatcher } from "svelte";
 
+    interface Item {
+        id: string;
+        index: number;
+        [key: string]: any;
+    }
+
     export let list: any[];
     let isOver: string | boolean = false;
 
     const dispatch = createEventDispatcher();
 
-    function getDraggedParent(node: any) {
+    function getDraggedParent(node: any): Item {
         if (!node.dataset.index) {
             return getDraggedParent(node.parentNode);
         } else {
-            return { ...node.dataset };
+            return { ...node.dataset } as Item;
         }
     }
 
     function onDragStart(e: DragEvent) {
+        // @ts-ignore
         const dragged = getDraggedParent(e.target);
         e.dataTransfer?.setData("source", dragged?.index.toString());
     }
@@ -37,19 +44,20 @@
         const dragged = getDraggedParent(e.target);
         reorder({
             from: e.dataTransfer?.getData("source"),
-            to: dragged?.index,
+            to: dragged.index,
         });
     }
 
     const reorder = ({ from, to }: any) => {
         const newList = [...list];
         newList[from] = [newList[to], (newList[to] = newList[from])][0];
+
         dispatch("sort", newList);
     };
 </script>
 
 {#if list?.length}
-    <ul class="list-none p-0 flex felx-col items-center">
+    <ul class="list-none p-0 flex flex-col items-center">
         {#each list as item, index (item.id)}
             <li
                 class="border-2 border-dashed border-transparent p-2 transition-all max-w-md w-full"

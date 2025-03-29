@@ -20,11 +20,11 @@
         "YouTube",
         "Twitch",
         "TikTok",
-        "Custom",
+        "Link",
     ];
 
     const formDefaults = {
-        icon: "custom",
+        icon: "link",
         title: "",
         url: "https://",
     };
