@@ -3,12 +3,9 @@
     import AuthCheck from "$lib/components/AuthCheck.svelte";
     import { signOut } from "firebase/auth";
 
-    async function handleSignOut() {
-        try {
-            await signOut(auth);
-        } catch (error) {
-            console.error("Error during sign-out:", error);
-        }
+    async function signOutSSR() {
+        const res = await fetch("/api/signin", { method: "DELETE" });
+        await signOut(auth);
     }
 </script>
 
@@ -18,9 +15,8 @@
             <h2 class="card-title">Welcome, {$user?.displayName}!</h2>
             <p class="text-success">You are successfully logged in.</p>
             <div class="card-actions">
-                <button
-                    class="btn btn-primary btn-block"
-                    on:click={handleSignOut}>Sign Out</button
+                <button class="btn btn-primary btn-block" on:click={signOutSSR}
+                    >Sign Out</button
                 >
             </div>
         </div>

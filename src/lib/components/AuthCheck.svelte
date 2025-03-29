@@ -5,7 +5,21 @@
     async function signInWithGoogle() {
         try {
             const provider = new GoogleAuthProvider();
-            await signInWithPopup(auth, provider);
+            const credential = await signInWithPopup(auth, provider);
+            const idToken = await credential.user.getIdToken();
+            const response = await fetch("/api/signin", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    // 'CSRF-Token': csrfToken  // HANDLED by sveltekit automatically
+                },
+                body: JSON.stringify({ idToken }),
+            });
+            if (response.ok) {
+                console.log("Sign-in successful", response);
+            } else {
+                console.error("Sign-in failed");
+            }
         } catch (error) {
             console.error("Error during sign-in:", error);
         }
