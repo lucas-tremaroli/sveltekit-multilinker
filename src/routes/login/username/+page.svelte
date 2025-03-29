@@ -6,15 +6,12 @@
     let username = "";
     let loading = false;
     let isAvailable = false;
-
     let debounceTimer: NodeJS.Timeout;
 
     async function checkAvailability() {
         isAvailable = false;
         clearTimeout(debounceTimer);
-
         loading = true;
-
         // Debounce the check to avoid making too many requests
         debounceTimer = setTimeout(async () => {
             console.log("Checking availability for", username);
@@ -27,7 +24,6 @@
 
     async function saveUsername() {
         if (!isAvailable || loading) return;
-
         console.log("Saving username", username);
         const batch = writeBatch(db);
         // Atomic write to both collections using a batch
@@ -61,7 +57,7 @@
 
 <AuthCheck>
     {#if $userData?.username}
-        <div class="card bg-base-300">
+        <div class="card bg-base-200">
             <div class="card-body space-y-2">
                 <h2 class="card-title">Username</h2>
                 <p>

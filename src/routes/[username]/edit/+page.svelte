@@ -33,7 +33,10 @@
 
     let showForm = false;
 
-    $: urlIsValid = $formData.url.match(/^(ftp|http|https):\/\/[^ "]+$/);
+    $: urlIsValid =
+        /^(ftp|http|https):\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}.*$/.test(
+            $formData.url,
+        );
     $: titleIsValid = $formData.title.length > 0 && $formData.title.length < 20;
     $: formIsValid = urlIsValid && titleIsValid;
 
@@ -89,57 +92,55 @@
             </div>
         </SortableList>
         {#if showForm}
-            <form
-                on:submit|preventDefault={addLink}
-                class="bg-base-200 p-6 w-full mx-auto rounded-xl"
-            >
-                <select
-                    name="icon"
-                    class="select select-sm"
-                    bind:value={$formData.icon}
-                >
-                    {#each icons as icon}
-                        <option value={icon.toLowerCase()}>{icon}</option>
-                    {/each}
-                </select>
-                <input
-                    type="text"
-                    name="title"
-                    placeholder="Title"
-                    class="input input-sm"
-                    bind:value={$formData.title}
-                />
-                <input
-                    type="text"
-                    name="url"
-                    placeholder="URL"
-                    class="input input-sm"
-                    bind:value={$formData.url}
-                />
-                <div class="my-4">
-                    {#if !titleIsValid}
-                        <p class="text-error text-xs">
+            <form on:submit|preventDefault={addLink}>
+                <fieldset class="fieldset bg-base-200 p-6 space-y-2">
+                    <legend class="text-center">Add a Link</legend>
+                    <legend class="fieldset-legend form-control">Icon</legend>
+                    <select
+                        name="icon"
+                        class="select w-full"
+                        bind:value={$formData.icon}
+                    >
+                        {#each icons as icon}
+                            <option value={icon.toLowerCase()}>{icon}</option>
+                        {/each}
+                    </select>
+                    <legend class="fieldset-legend form-control">Title</legend>
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Title"
+                        class="input w-full"
+                        bind:value={$formData.title}
+                    />
+                    <p class="fieldset-label text-error">
+                        {#if !titleIsValid}
                             Title must be between 1 and 20 characters
-                        </p>
-                    {/if}
-                    {#if !urlIsValid}
-                        <p class="text-error text-xs">URL must be valid</p>
-                    {/if}
-                    {#if formIsValid}
-                        <p class="text-success text-xs">Looks good!</p>
-                    {/if}
-                </div>
-
-                <button
-                    disabled={!formIsValid}
-                    type="submit"
-                    class="btn btn-success block">Add Link</button
-                >
-                <button
-                    type="button"
-                    class="btn btn-xs my-4"
-                    on:click={cancelLink}>Cancel</button
-                >
+                        {/if}
+                    </p>
+                    <legend class="fieldset-legend form-control">URL</legend>
+                    <input
+                        type="url"
+                        placeholder="https://"
+                        class="input w-full"
+                        bind:value={$formData.url}
+                    />
+                    <p class="fieldset-label text-error">
+                        {#if !urlIsValid}
+                            URL must be valid
+                        {/if}
+                    </p>
+                    <button
+                        disabled={!formIsValid}
+                        type="submit"
+                        class="btn btn-success btn-block">Add Link</button
+                    >
+                    <button
+                        type="button"
+                        class="btn btn-error btn-block"
+                        on:click={cancelLink}>Cancel</button
+                    >
+                </fieldset>
             </form>
         {:else}
             <button

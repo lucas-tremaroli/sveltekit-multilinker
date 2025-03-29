@@ -13,7 +13,7 @@
 </script>
 
 <AuthCheck>
-    <div class="card bg-base-300">
+    <div class="card bg-base-200">
         <div class="card-body space-y-2">
             <h2 class="card-title">Welcome, {$user?.displayName}!</h2>
             <p class="text-success">You are successfully logged in.</p>

@@ -23,19 +23,22 @@
 </script>
 
 <AuthCheck>
-    <div class="card bg-base-300">
+    <div class="card bg-base-200">
         <div class="card-body space-y-2">
             <h2 class="card-title">Profile Pic</h2>
             <p>Upload or change your profile picture.</p>
             <form>
                 <div class="form-control space-y-2">
-                    <img
-                        src={previewURL ?? $userData?.photoURL ?? "/user.png"}
-                        alt="photoURL"
-                        width="200"
-                        height="200"
-                        class="mx-auto my-2"
-                    />
+                    <div class="avatar">
+                        <div class="mx-auto w-48 h-48">
+                            <img
+                                src={previewURL ??
+                                    $userData?.photoURL ??
+                                    "/user.png"}
+                                alt="photoURL"
+                            />
+                        </div>
+                    </div>
                     {#if uploading}
                         <div class="flex flex-col items-center">
                             <p>Uploading...</p>
